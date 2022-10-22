@@ -1,10 +1,14 @@
 import 'package:app/Screens/screen_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'States/manage_check.dart';
 import 'States/manage_color.dart';
+import 'Blocs/state_repository.dart';
+
 
 void main() {
+WidgetsFlutterBinding.ensureInitialized();
   runApp( 
     MultiBlocProvider(
   providers: [
@@ -13,6 +17,9 @@ void main() {
     ),
     BlocProvider<ColorCubit>(
       create: (BuildContext context) => ColorCubit(),
+    ),
+    BlocProvider<DataBloc>(
+      create: (BuildContext context) => DataBloc(),
     ),
   ],
   child: const MyApp(),
