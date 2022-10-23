@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:app/Blocs/manage_repository.dart';
+import 'package:app/Blocs/events_repository.dart';
 
 
 

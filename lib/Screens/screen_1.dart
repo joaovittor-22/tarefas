@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:app/Screens/screen_2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/States/manage_check.dart';
-import 'package:app/Blocs/manage_repository.dart';
-import 'package:app/Blocs/state_repository.dart';
+import 'package:app/Blocs/state_list.dart';
+import 'package:app/Blocs/bloc.dart';
+import 'package:app/Blocs/events_repository.dart';
 
 
 class FirstScreen extends StatelessWidget {
-final EventsBloc bloc = EventsBloc();
   var text = '';
 
   @override
   Widget build(BuildContext context) {
-    context.read<DataBloc>().getRepo();
-  
+
+  final MainBloc bloc = BlocProvider.of<MainBloc>(context); //inicia uma instancia do bloc 
+  bloc.add(InitBloc()); // envia um evento inicial para buscar qualquer dado que estivesse salvo no db
+
     return Scaffold(
       appBar: AppBar(
         title: Text("App"),
@@ -48,17 +50,15 @@ final EventsBloc bloc = EventsBloc();
               decoration: InputDecoration(
                   suffixIcon: IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () async {
-                  text.isNotEmpty ? bloc.add(text) : null;
-                  context.read<DataBloc>().getRepo();
-
+                onPressed: (){
+                   bloc.add(AddBloc(text: text)); //evento para adicionar  dados
                 },
               )),
               onChanged: (value) {
                 text = value;
               },
             ),
-            BlocBuilder<DataBloc, List>(
+            BlocBuilder<MainBloc, List<dynamic>>(
               builder: (context, snapshot) {
               return Expanded(
                   child: ListView.builder(
@@ -66,13 +66,12 @@ final EventsBloc bloc = EventsBloc();
                       itemBuilder: ((context, index) {
                         return Row(
                           children: [
-                            Text("${snapshot[index]?["name"]}"),
+                          Text("${snapshot[index]?["name"]}"),
                             const Spacer(),
                             IconButton(
-                                onPressed: () async{
-                                var id = snapshot[index]?["id"];
-                                 bloc.remove(id);
-                                 context.read<DataBloc>().getRepo();
+                                onPressed: () {
+                               var id = snapshot[index]?["id"];
+                               bloc.add(RemoveBloc(id: id)); // evento para remover item da lista
                                 },
                                 icon: Icon(Icons.delete))
                           ],
