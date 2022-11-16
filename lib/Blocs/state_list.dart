@@ -9,8 +9,9 @@ class DataBloc //extends Cubit<List>
    List<Map<String,dynamic>> list = [];
  // DataBloc() : super([]);
  
- Future<List<dynamic>>   getRepo() async {
+// Future<List<dynamic>>  
+  getRepo() async {
     //emit();
-    return list = await db.getData();
+   // return list = await db.getData();
   }
 }

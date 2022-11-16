@@ -15,7 +15,7 @@ class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
   final MainBloc bloc = BlocProvider.of<MainBloc>(context); //inicia uma instancia do bloc 
-  bloc.add(InitBloc()); // envia um evento inicial para buscar qualquer dado que estivesse salvo no db
+bloc.add(ListImagesEvent()); // envia um evento inicial para buscar qualquer dado que estivesse salvo no db
 
     return Scaffold(
       appBar: AppBar(
@@ -46,18 +46,18 @@ class FirstScreen extends StatelessWidget {
                     });
               },
             ),*/
-            TextFormField(
+        /*    TextFormField(
               decoration: InputDecoration(
                   suffixIcon: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: (){
-                   bloc.add(AddBloc(text: text)); //evento para adicionar  dados
+               //    bloc.add(GetImageEvent()); //evento para adicionar  dados
                 },
               )),
               onChanged: (value) {
                 text = value;
               },
-            ),
+            ),*/
             BlocBuilder<MainBloc, List<dynamic>>(
               builder: (context, snapshot) {
               return Expanded(
@@ -66,14 +66,16 @@ class FirstScreen extends StatelessWidget {
                       itemBuilder: ((context, index) {
                         return Row(
                           children: [
-                          Text("${snapshot[index]?["name"]}"),
-                            const Spacer(),
-                            IconButton(
+                            Image.network(snapshot[index],height: 100,width: 100,), 
+                              const SizedBox(width: 10,),
+                            Expanded(child:Text(" link: ${snapshot[index]}", style: TextStyle(fontSize: 8),) )                          ,
+                         
+                         /*   IconButton(
                                 onPressed: () {
-                               var id = snapshot[index]?["id"];
-                               bloc.add(RemoveBloc(id: id)); // evento para remover item da lista
+                             //  var id = snapshot[index]?["id"];
+                            //  bloc.add(); // evento para remover item da lista
                                 },
-                                icon: Icon(Icons.delete))
+                                icon: Icon(Icons.delete))*/
                           ],
                         );
                       })
@@ -82,16 +84,20 @@ class FirstScreen extends StatelessWidget {
           ],
         ),
       ),
-      /*   floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
+        /*  Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => SecondScreen()),
-          );
+          );*/
+
+                   bloc.add(GetImageEvent()); //evento para adicionar  dados
+
         },
+        label: Text("Adicionar imagem"),
         tooltip: 'Increment',
-        child: const Icon(Icons.navigate_next_sharp),
-      ),*/
+        icon: const Icon(Icons.add),
+      ),
     );
   }
 }

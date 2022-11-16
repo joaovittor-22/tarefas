@@ -6,10 +6,15 @@ import 'package:provider/provider.dart';
 import 'States/manage_check.dart';
 import 'States/manage_color.dart';
 import 'Blocs/state_list.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 
-void main() {
+void main()async {
 WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp( 
     MultiBlocProvider(
   providers: [
